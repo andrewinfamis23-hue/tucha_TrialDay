@@ -59,16 +59,9 @@ class SandboxLayoutTest(unittest.TestCase):
         self.assertNotIn("94.141.162.84", provenance)
 
     def test_candidate_reasoning_and_ai_use_are_reviewed(self) -> None:
-        evaluation = (ROOT / "EVALUATION.md").read_text(encoding="utf-8")
-        interview = (ROOT / "INTERVIEW.md").read_text(encoding="utf-8")
         worklog = (ROOT / "WORKLOG.md").read_text(encoding="utf-8")
-        self.assertIn("100 баллов", evaluation)
-        self.assertIn("Чужой код", evaluation)
-        self.assertIn("Работа с неполным ТЗ", evaluation)
-        self.assertIn("Работа с ИИ-агентами", evaluation)
-        self.assertIn("Обновление драйвера", interview)
-        self.assertIn("Переустановка Windows", interview)
-        self.assertIn("Приложение в Docker", interview)
+        self.assertFalse((ROOT / "EVALUATION.md").exists())
+        self.assertFalse((ROOT / "INTERVIEW.md").exists())
         self.assertIn("Что в задании было неясно", worklog)
         self.assertIn("Что предложил ИИ", worklog)
         self.assertIn("Как я это проверил", worklog)
