@@ -1,0 +1,43 @@
+name: tucha-trial-day
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: tucha_sandbox
+      POSTGRES_USER: sandbox
+      POSTGRES_PASSWORD: sandbox-local-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sandbox -d tucha_sandbox"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - sandbox-db:/var/lib/postgresql
+      - ./docker/seed_data.sql:/docker-entrypoint-initdb.d/10-wms-mock.sql:ro
+    networks: [sandbox]
+  odoo:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      HOST: db
+      PORT: "5432"
+      USER: crm_sandbox
+      PASSWORD: crm-sandbox-local-only
+      DB_NAME: tucha_sandbox
+    volumes:
+      - sandbox-odoo:/var/lib/odoo
+    networks: [sandbox]
+    ports:
+      - "127.0.0.1:18069:8069"
+
+networks:
+  sandbox:
+
+volumes:
+  sandbox-db:
+  sandbox-odoo:

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tucha_request_candidate,tucha.request candidate,model_tucha_request,tucha_crm.group_tucha_candidate,1,1,1,0
+access_tucha_dashboard_candidate,tucha.dashboard candidate,model_tucha_dashboard,tucha_crm.group_tucha_candidate,1,0,0,0
+access_tucha_billing_candidate,tucha.billing candidate,model_tucha_billing_line,tucha_crm.group_tucha_candidate,1,1,1,0
+access_tucha_request_import_candidate,tucha.request.import candidate,model_tucha_request_import,tucha_crm.group_tucha_candidate,1,1,1,1
+access_wms_mock_operation_candidate,wms.mock.operation candidate,model_wms_mock_operation,tucha_crm.group_tucha_candidate,1,0,0,0

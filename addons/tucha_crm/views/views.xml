@@ -1,0 +1,127 @@
+<odoo>
+  <record id="view_tucha_request_list" model="ir.ui.view">
+    <field name="name">tucha.request.list</field>
+    <field name="model">tucha.request</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="customer_id"/>
+        <field name="request_type"/>
+        <field name="planned_from"/>
+        <field name="planned_to"/>
+        <field name="stage"/>
+        <field name="taken_by"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_tucha_request_form" model="ir.ui.view">
+    <field name="name">tucha.request.form</field>
+    <field name="model">tucha.request</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="action_take" type="object" string="Взять в работу" class="btn-primary"/>
+          <button name="action_release" type="object" string="Снять оператора"
+                  groups="tucha_crm.group_tucha_manager"/>
+          <field name="stage" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="customer_id" domain="[('tucha_sandbox_customer', '=', True)]"/>
+            <field name="request_type"/>
+            <field name="planned_from"/>
+            <field name="planned_to"/>
+            <field name="taken_by" readonly="1"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_tucha_request_graph" model="ir.ui.view">
+    <field name="name">tucha.request.graph</field>
+    <field name="model">tucha.request</field>
+    <field name="arch" type="xml">
+      <graph string="Заявки по этапам" type="bar">
+        <field name="stage"/>
+      </graph>
+    </field>
+  </record>
+
+  <record id="view_tucha_billing_list" model="ir.ui.view">
+    <field name="name">tucha.billing.line.list</field>
+    <field name="model">tucha.billing.line</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="customer_id"/>
+        <field name="request_id"/>
+        <field name="service_date"/>
+        <field name="amount" sum="Итого"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_wms_mock_operation_list" model="ir.ui.view">
+    <field name="name">wms.mock.operation.list</field>
+    <field name="model">wms.mock.operation</field>
+    <field name="arch" type="xml">
+      <list create="0" edit="0" delete="0">
+        <field name="external_id"/>
+        <field name="operation_type"/>
+        <field name="document_state"/>
+        <field name="planned_at"/>
+        <field name="customer_code"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="action_tucha_requests" model="ir.actions.act_window">
+    <field name="name">Заявки</field>
+    <field name="res_model">tucha.request</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_tucha_clients" model="ir.actions.act_window">
+    <field name="name">Клиенты</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('tucha_sandbox_customer', '=', True)]</field>
+  </record>
+  <record id="action_tucha_billing" model="ir.actions.act_window">
+    <field name="name">Биллинг</field>
+    <field name="res_model">tucha.billing.line</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <record id="action_tucha_reports" model="ir.actions.act_window">
+    <field name="name">Отчёты</field>
+    <field name="res_model">tucha.request</field>
+    <field name="view_mode">graph,list</field>
+  </record>
+  <record id="action_tucha_logistics" model="ir.actions.act_window">
+    <field name="name">Логистика WMS Mock</field>
+    <field name="res_model">wms.mock.operation</field>
+    <field name="view_mode">list</field>
+  </record>
+  <record id="action_tucha_warehouse" model="ir.actions.act_window">
+    <field name="name">Приёмка/Отгрузка WMS Mock</field>
+    <field name="res_model">wms.mock.operation</field>
+    <field name="view_mode">list</field>
+  </record>
+
+  <menuitem id="menu_tucha_root" name="TuchaCRM Sandbox" sequence="1"
+            groups="tucha_crm.group_tucha_candidate"/>
+  <menuitem id="menu_tucha_requests" name="Заявки" parent="menu_tucha_root"
+            action="action_tucha_requests" sequence="10"/>
+  <menuitem id="menu_tucha_logistics" name="Логистика" parent="menu_tucha_root"
+            action="action_tucha_logistics" sequence="20"/>
+  <menuitem id="menu_tucha_clients" name="Клиенты" parent="menu_tucha_root"
+            action="action_tucha_clients" sequence="30"/>
+  <menuitem id="menu_tucha_billing" name="Биллинг" parent="menu_tucha_root"
+            action="action_tucha_billing" sequence="40"/>
+  <menuitem id="menu_tucha_reports" name="Отчёты" parent="menu_tucha_root"
+            action="action_tucha_reports" sequence="50"/>
+  <menuitem id="menu_tucha_warehouse" name="Приёмка/Отгрузка" parent="menu_tucha_root"
+            action="action_tucha_warehouse" sequence="60"/>
+</odoo>

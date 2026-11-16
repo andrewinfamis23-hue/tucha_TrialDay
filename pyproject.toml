@@ -1,0 +1,11 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 110
+exclude = ["addons/tucha_crm/migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"addons/tucha_crm/__manifest__.py" = ["B018"]
