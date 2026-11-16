@@ -23,3 +23,17 @@ class TuchaRequestImport(models.TransientModel):
             return base64.b64decode(self.file_data, validate=True)
         except (binascii.Error, ValueError):
             raise ValidationError("Не удалось прочитать содержимое файла.") from None
+
+    def action_validate_file(self) -> dict:
+        """Даёт кандидату воспроизводимую точку входа через интерфейс."""
+        self._source_bytes()
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Файл принят",
+                "message": "Размер файла не превышает лимит.",
+                "type": "success",
+                "sticky": False,
+            },
+        }

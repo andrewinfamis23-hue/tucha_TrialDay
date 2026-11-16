@@ -16,6 +16,14 @@ def post_init_hook(env: api.Environment) -> None:
         "password": "candidate-sandbox-2026",
         "groups_id": [Command.link(group.id)],
     })
+    manager_group = env.ref("tucha_crm.group_tucha_manager")
+    env["res.users"].with_context(no_reset_password=True).create({
+        "name": "Менеджер Sandbox",
+        "login": "manager@example.test",
+        "email": "manager@example.test",
+        "password": "manager-sandbox-2026",
+        "groups_id": [Command.link(manager_group.id)],
+    })
     customers = env["res.partner"].create([
         {
             "name": f"ООО Тестовый клиент {number}",

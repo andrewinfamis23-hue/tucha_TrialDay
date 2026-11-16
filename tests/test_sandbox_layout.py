@@ -30,6 +30,15 @@ class SandboxLayoutTest(unittest.TestCase):
         self.assertIn("addons_path = /opt/tucha-addons,", config)
         self.assertNotIn("COPY addons/tucha_crm /mnt/extra-addons", dockerfile)
 
+    def test_candidate_entry_points_exist(self) -> None:
+        hooks = (ROOT / "addons/tucha_crm/hooks.py").read_text(encoding="utf-8")
+        views = (ROOT / "addons/tucha_crm/views/views.xml").read_text(encoding="utf-8")
+        tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+        self.assertIn('"login": "manager@example.test"', hooks)
+        self.assertIn('id="action_tucha_request_import"', views)
+        self.assertIn("Куда нажать", tasks)
+        self.assertIn("SOLUTION.md", tasks)
+
 
 if __name__ == "__main__":
     unittest.main()
