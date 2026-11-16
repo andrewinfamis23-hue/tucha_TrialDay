@@ -18,7 +18,8 @@ class SandboxLayoutTest(unittest.TestCase):
     def test_wms_mock_is_runtime_isolated(self) -> None:
         compose = (ROOT / "compose.yaml").read_text(encoding="utf-8")
         seed = (ROOT / "docker/seed_data.sql").read_text(encoding="utf-8")
-        self.assertIn('"127.0.0.1:18069:8069"', compose)
+        self.assertIn('"127.0.0.1:80:80"', compose)
+        self.assertNotIn("18069", compose)
         self.assertIn("CREATE SCHEMA IF NOT EXISTS wms_mock", seed)
         self.assertIn("GRANT SELECT ON ALL TABLES IN SCHEMA wms_mock", seed)
         self.assertNotIn('"127.0.0.1:15432:5432"', compose)
@@ -35,6 +36,7 @@ class SandboxLayoutTest(unittest.TestCase):
         views = (ROOT / "addons/tucha_crm/views/views.xml").read_text(encoding="utf-8")
         tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
         self.assertIn('"login": "manager@example.test"', hooks)
+        self.assertEqual(hooks.count('"lang": "ru_RU"'), 2)
         self.assertIn('id="action_tucha_request_import"', views)
         self.assertIn("Куда нажать", tasks)
         self.assertIn("SOLUTION.md", tasks)
@@ -44,7 +46,26 @@ class SandboxLayoutTest(unittest.TestCase):
         startup = (ROOT / "docker/start-sandbox.sh").read_text(encoding="utf-8")
         self.assertIn("list_db = False", config)
         self.assertNotIn("dbfilter", config)
+        self.assertIn("proxy_mode = True", config)
         self.assertIn('--database="$DB_NAME"', startup)
+
+    def test_prod_ui_is_pinned_and_has_no_production_connection(self) -> None:
+        manifest = (ROOT / "addons/tucha_crm/__manifest__.py").read_text(encoding="utf-8")
+        provenance = (ROOT / "docs/PROD_UI_SOURCE.md").read_text(encoding="utf-8")
+        proxy = (ROOT / "docker/nginx.conf").read_text(encoding="utf-8")
+        self.assertIn("sandbox_interface.js", manifest)
+        self.assertIn("12df4b9", provenance)
+        self.assertIn("proxy_pass http://odoo:8069", proxy)
+        self.assertNotIn("94.141.162.84", provenance)
+
+    def test_candidate_reasoning_and_ai_use_are_reviewed(self) -> None:
+        evaluation = (ROOT / "EVALUATION.md").read_text(encoding="utf-8")
+        worklog = (ROOT / "WORKLOG.md").read_text(encoding="utf-8")
+        self.assertIn("100 баллов", evaluation)
+        self.assertIn("Незнакомый код", evaluation)
+        self.assertIn("Работа с ИИ", evaluation)
+        self.assertIn("Что предложил ИИ", worklog)
+        self.assertIn("Как я это проверил", worklog)
 
 
 if __name__ == "__main__":

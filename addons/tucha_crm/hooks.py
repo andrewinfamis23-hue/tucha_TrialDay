@@ -5,6 +5,10 @@ from odoo import Command, api
 
 def post_init_hook(env: api.Environment) -> None:
     """Создаёт только синтетические данные при первой установке модуля."""
+    russian = env.ref("base.lang_ru")
+    if not russian.active:
+        russian.active = True
+
     if env["tucha.request"].search_count([]):
         return
 
@@ -13,6 +17,7 @@ def post_init_hook(env: api.Environment) -> None:
         "name": "Кандидат Sandbox",
         "login": "candidate@example.test",
         "email": "candidate@example.test",
+        "lang": "ru_RU",
         "password": "candidate-sandbox-2026",
         "groups_id": [Command.link(group.id)],
     })
@@ -21,6 +26,7 @@ def post_init_hook(env: api.Environment) -> None:
         "name": "Менеджер Sandbox",
         "login": "manager@example.test",
         "email": "manager@example.test",
+        "lang": "ru_RU",
         "password": "manager-sandbox-2026",
         "groups_id": [Command.link(manager_group.id)],
     })

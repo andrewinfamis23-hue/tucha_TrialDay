@@ -1,0 +1,28 @@
+<odoo>
+  <template id="tucha_layout_brand" inherit_id="web.layout">
+    <xpath expr="//title" position="replace"><title>Туча-МЛ · Sandbox</title></xpath>
+    <xpath expr="//link[@rel='shortcut icon']" position="attributes">
+      <attribute name="t-att-href">'/tucha_crm/static/src/img/brand.svg'</attribute>
+      <attribute name="type">image/svg+xml</attribute>
+    </xpath>
+  </template>
+  <template id="tucha_frontend_layout_brand" inherit_id="web.frontend_layout">
+    <xpath expr="//head/title" position="replace"><title>Туча-МЛ · Sandbox</title></xpath>
+  </template>
+  <template id="tucha_login_brand" inherit_id="web.login_layout">
+    <xpath expr="//div[hasclass('card-body')]/div[1]" position="replace">
+      <div class="tucha_login_brand">
+        <img src="/tucha_crm/static/src/img/brand.svg" alt="Туча-МЛ" width="48" height="48"/>
+        <h1>Туча-МЛ</h1><p>Учебная CRM · только фейковые данные</p>
+      </div>
+    </xpath>
+    <xpath expr="//div[@t-if='not disable_footer']" position="replace">
+      <div class="tucha_login_footer">Изолированная песочница</div>
+    </xpath>
+  </template>
+  <template id="tucha_brand_promotion" inherit_id="web.brand_promotion">
+    <xpath expr="//div[hasclass('o_brand_promotion')]" position="replace">
+      <span class="text-muted">Туча-МЛ · Sandbox</span>
+    </xpath>
+  </template>
+</odoo>

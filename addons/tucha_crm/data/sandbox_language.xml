@@ -1,0 +1,13 @@
+<odoo>
+  <!-- Включаем русский только в локальной учебной базе. -->
+  <record id="base.lang_ru" model="res.lang">
+    <field name="active" eval="True"/>
+  </record>
+  <!-- При обновлении уже созданной песочницы переводим фейковые аккаунты. -->
+  <function model="res.users" name="write">
+    <function model="res.users" name="search">
+      <value eval="[('login', 'in', ['candidate@example.test', 'manager@example.test'])]"/>
+    </function>
+    <value eval="{'lang': 'ru_RU'}"/>
+  </function>
+</odoo>

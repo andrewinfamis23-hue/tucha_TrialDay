@@ -18,6 +18,7 @@ class TuchaRequest(models.Model):
     )
     request_type = fields.Selection(
         [("inbound", "Приёмка"), ("outbound", "Отгрузка")],
+        string="Тип заявки",
         required=True,
         default="inbound",
         index=True,
@@ -33,6 +34,7 @@ class TuchaRequest(models.Model):
             ("completed", "Завершена"),
             ("cancelled", "Отменена"),
         ],
+        string="Статус",
         required=True,
         default="new",
         index=True,

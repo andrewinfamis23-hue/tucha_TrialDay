@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+  <t t-inherit="web.NavBar" t-inherit-mode="extension">
+    <xpath expr="//t[@t-set='apps']" position="attributes">
+      <attribute name="t-value">menuService.getApps().filter((app) =&gt; app.xmlid === 'tucha_crm.menu_tucha_root')</attribute>
+    </xpath>
+  </t>
+  <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
+    <xpath expr="//a[hasclass('o_menu_toggle')]" position="attributes">
+      <attribute name="aria-label">Открыть разделы</attribute>
+    </xpath>
+    <xpath expr="//div[hasclass('o_navbar_apps_menu')]" position="replace">
+      <div t-if="!isScopedApp" class="tucha_navbar_logo" aria-hidden="true">
+        <img src="/tucha_crm/static/src/img/brand.svg" alt="" width="32" height="32"/>
+      </div>
+    </xpath>
+  </t>
+  <t t-inherit="web.NavBar.SectionsMenu" t-inherit-mode="extension">
+    <xpath expr="//DropdownItem[@class=&quot;'o_nav_entry'&quot;]" position="attributes">
+      <attribute name="class">{ 'o_nav_entry': true, 'tucha_section_active': isTuchaSectionActive(section) }</attribute>
+    </xpath>
+    <xpath expr="//button[@t-att-data-menu-xmlid='section.xmlid']" position="attributes">
+      <attribute name="t-att-class">{ 'tucha_section_active': isTuchaSectionActive(section) }</attribute>
+      <attribute name="t-att-aria-current">isTuchaSectionActive(section) ? 'page' : undefined</attribute>
+    </xpath>
+  </t>
+</templates>
