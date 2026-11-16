@@ -24,6 +24,15 @@
           <button name="action_take" type="object" string="Взять в работу" class="btn-primary"/>
           <button name="action_release" type="object" string="Снять оператора"
                   groups="tucha_crm.group_tucha_manager"/>
+          <button name="action_request_correction" type="object" string="Запросить корректировку"
+                  invisible="correction_state == 'requested'"/>
+          <button name="action_receive_correction" type="object" string="Информация получена"
+                  invisible="correction_state != 'requested'"/>
+          <button name="action_verify_correction" type="object" string="Проверить корректировку"
+                  invisible="correction_state != 'received'"/>
+          <button name="action_reopen_correction" type="object" string="Вернуть на корректировку"
+                  groups="tucha_crm.group_tucha_manager"
+                  invisible="correction_state not in ('received', 'verified')"/>
           <field name="stage" widget="statusbar"/>
         </header>
         <sheet>
@@ -34,6 +43,10 @@
             <field name="planned_from"/>
             <field name="planned_to"/>
             <field name="taken_by" readonly="1"/>
+            <field name="correction_state"/>
+            <field name="correction_requested_at"/>
+            <field name="correction_received_at"/>
+            <field name="correction_verified_at"/>
           </group>
         </sheet>
       </form>

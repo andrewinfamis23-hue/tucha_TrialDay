@@ -23,6 +23,13 @@ class SandboxLayoutTest(unittest.TestCase):
         self.assertIn("GRANT SELECT ON ALL TABLES IN SCHEMA wms_mock", seed)
         self.assertNotIn('"127.0.0.1:15432:5432"', compose)
 
+    def test_addon_path_is_not_hidden_by_odoo_volume(self) -> None:
+        dockerfile = (ROOT / "docker/Dockerfile").read_text(encoding="utf-8")
+        config = (ROOT / "docker/odoo.conf").read_text(encoding="utf-8")
+        self.assertIn("/opt/tucha-addons/tucha_crm", dockerfile)
+        self.assertIn("addons_path = /opt/tucha-addons,", config)
+        self.assertNotIn("COPY addons/tucha_crm /mnt/extra-addons", dockerfile)
+
 
 if __name__ == "__main__":
     unittest.main()
