@@ -39,6 +39,13 @@ class SandboxLayoutTest(unittest.TestCase):
         self.assertIn("Куда нажать", tasks)
         self.assertIn("SOLUTION.md", tasks)
 
+    def test_single_database_opens_without_database_manager(self) -> None:
+        config = (ROOT / "docker/odoo.conf").read_text(encoding="utf-8")
+        startup = (ROOT / "docker/start-sandbox.sh").read_text(encoding="utf-8")
+        self.assertIn("list_db = False", config)
+        self.assertNotIn("dbfilter", config)
+        self.assertIn('--database="$DB_NAME"', startup)
+
 
 if __name__ == "__main__":
     unittest.main()
